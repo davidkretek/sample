@@ -1,0 +1,114 @@
+function StartTDM: boolean;
+var p, w, Menu: OleVariant;
+    app: OleVariant;
+    i: integer;
+    MainForm: OLEVariant;
+begin
+  Result := false;
+ 
+  i := TestedApps.Find('TDM');
+  app := TestedApps.Items[i];
+  p := app.Run;
+  //Najdeme TApplication
+  w := p.Window('*', 'Toad Data Modeler*');
+  
+  if w.Exists then
+  begin
+    //Cekame dokud se nevytvori hlavni form  
+    MainForm := p.waitwindow('TFMain', 'Toad Data Modeler*', -1, -1);
+    if MainForm.Exists then
+    begin
+      Delay(2000);
+      //Potom co se vytoril se deje jeste spousta veci, pockame na assign MainMenu
+      while MainForm.MainMenu = nil do
+        Delay(1000);
+      //A cekame dokud neni visible true
+      while not MainForm.Visible do
+        Delay(1000);  
+      //if MainForm.WaitProperty('Visible', true, -1) then
+      Result := true;      
+    end;
+  end;  
+end;   
+
+procedure Stop();
+var p: OLEVariant;
+begin
+  p := Sys.Process('TDM');
+  p.Terminate;
+end;
+
+
+procedure SaveModel(ModelPath: String);
+var
+  Dlg;
+begin 
+  Aliases.TDM.Main.Keys('^s'); // Ctrl+S
+    Dlg:= Aliases.TDM.Window('*', 'Save Model*');  // find save dialog
+  if Dlg = nil then exit;
+  
+  Dlg.Window('DUIViewWndClassName').UIAObject('Explorer_Pane').Window('FloatNotifySink', '', 1).Window('ComboBox').SetText(ModelPath);
+  Dlg.Window('Button', '&Save').ClickButton; 
+end;
+
+
+procedure CreateNewModel(DBCaption);
+var
+  PageControl, Tab;
+begin
+  Aliases.TDM.MainForm.MainMenu.Click('[0]|[0]|[1]');
+  
+  PageControl:= Aliases.TDM.FSelectModelType.Panel1.PageControl1;
+  
+  case DBCaption of
+    'Universal':      
+      begin
+        PageControl.ClickTab('&Universal Data Model ');
+        Tab:= Aliases.TDM.FSelectModelType.Panel1.PageControl1.TTabSheet2; 
+      end;
+    'Logical model':  
+      begin
+        PageControl.ClickTab('&Logical Data Model ');
+        Tab:= Aliases.TDM.FSelectModelType.Panel1.PageControl1.TTabSheet3;
+      end;
+    else
+      begin
+        PageControl.ClickTab('&Physical Data Model ');
+        Tab:= Aliases.TDM.FSelectModelType.Panel1.PageControl1.TTabSheet;
+      end;
+  end;
+  
+  Tab.TListView.ClickItem(DBCaption, 0);
+  
+  Aliases.TDM.FSelectModelType.Panel2.BtOk.ClickButton;
+  
+  ResolveDisabledDB;
+  
+  Delay(3000);
+end;
+
+
+procedure CloseActiveModelWithoutDelay();
+begin
+  //Moves the mouse cursor to the menu item specified and then simulates a single click.
+  Aliases.TDM.FMain.MainMenu.Click('[0]|[11]|[0]');
+  //Clicks the 'No' button.
+  if Aliases.TDM.TfCSMessageBox.Exists then
+  begin
+    
+    if Regions.Compare(Regions.GetPicture('ModelHasBeenModifiedDlg'), Sys.Desktop.ActiveWindow, true, false, true, 0, lmNone) then
+
+    begin    
+    //Clicks the 'No' button.
+      Aliases.TDM.TfCSMessageBox.No.ClickButton;
+    end
+
+    else 
+    begin                                       
+      Aliases.TDM.TfCSMessageBox.Yes.ClickButton;
+    end;
+
+  end;
+end;
+
+
