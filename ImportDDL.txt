@@ -1,0 +1,99 @@
+uses Tools;
+
+procedure OpenModelTDM(ModelPath: string);
+begin
+  OpenModel(ModelPath,  Aliases.TDM.FMain);
+end;
+
+procedure CreateNewPERModelTDM(Caption: string);
+var p: OLEVariant;
+begin
+  p := Sys.Process('TDM');
+  CreateNewPERModel(Aliases.TDM.FMain, p, Caption); 
+end;
+
+procedure ReverseOR;
+  var TimeoutValue : OleVariant;
+begin
+ 
+  //Moves the mouse cursor to the menu item specified and then simulates a single click.
+  Aliases.TDM.FMain.MainMenu.Click('[0]|[7]|[1]');
+  //Clicks the 'BuNext' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BuNext.ClickButton;
+  //Sets the 'VScroll' scrollbar control to position 0.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.PaRight.FramePanel.frREDataSource.tvDataSources.VScroll.Pos := 0;
+  //Clicks at point (14, 11) of the 'tvDataSources' object.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.PaRight.FramePanel.frREDataSource.tvDataSources.Click(14, 11);
+  //Sets the state of the 'CHBShowEnabledDatabasesOnly' check box to cbChecked.
+  if Aliases.TDM.fWizFrameHostRE.WizardPanel.PaRight.FramePanel.frREDataSource.PaEnabledDatabases.CHBShowEnabledDatabasesOnly.wState = cbUnchecked then
+   
+   Aliases.TDM.fWizFrameHostRE.WizardPanel.PaRight.FramePanel.frREDataSource.PaEnabledDatabases.CHBShowEnabledDatabasesOnly.ClickButton(cbChecked);
+  //Clicks at point (84, 312) of the 'tvDataSources' object.
+    
+   
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.PaRight.FramePanel.frREDataSource.tvDataSources.Click(84, 312);
+  //Clicks the 'BuNext' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BuNext.ClickButton;
+  //Clicks the 'BuNext' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BuNext.ClickButton;
+ //Clicks the 'BtnOpenERD' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.PaRight.FramePanel.FrREConnectionDDLScript.PaMain.PaTop.PaTopRight.BtnOpenERD.ClickButton;
+
+  //Opens the 'C:\Users\qa\Documents\Toad Data Modeler\GeneratedScripts\Ora10.sql' file via the 'dlgDDLScriptFile' dialog.
+  Aliases.TDM.dlgDDLScriptFile.OpenFile('C:\Users\qa\Documents\Toad Data Modeler\GeneratedScripts\Ora12.sql', 'DDL script (*.sql)');
+  //Clicks the 'BuNext' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BuNext.ClickButton;
+  //Clicks the 'BuNext' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BuNext.ClickButton;
+  //Clicks the 'BuNext' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BuNext.ClickButton;
+  TimeoutValue := Options.Run.Timeout;
+  Options.Run.Timeout := 1000;
+  //Clicks the 'BuNext' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BuNext.ClickButton;
+  Options.Run.Timeout := TimeoutValue;
+  //Delays the test execution for the specified time period.
+  Delay(1000);
+  //Clicks at point (26, 6) of the 'ToolBarObjects' object.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.PaRight.FramePanel.frRETables.PaTop.PaSelection.AdvDockPanelObjects.ToolBarObjects.Click(26, 16);
+  //Clicks the 'BtnFinish' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BtnFinish.ClickButton;
+  //Clicks the 'OK' button.
+  Aliases.TDM.TfCSMessageBox.OK.ClickButton;
+  //Clicks the 'BuCancel' button.
+  Aliases.TDM.fWizFrameHostRE.WizardPanel.ButtonPanel.PaRightAnchors.BuCancel.ClickButton;
+end;
+
+procedure Save(ModelPath: String);
+var
+  Dlg;
+begin
+  //Enters '^s' in the 'FPERDesigner_1' object.
+  Aliases.TDM.FMain.PRLeft.TTabSheet.FHostBig_1.BPageControl1.TTabSheet.FPERDesigner_1.Keys('^s');
+  //Clicks the 'btnSave' button.
+  Dlg:= Aliases.TDM.Window('*', 'Save Model*'); // find save dialog
+  if Dlg = nil then exit;
+  
+  //Dlg.Window('DUIViewWndClassName').UIAObject('Explorer_Pane').Window('FloatNotifySink', '', 1).Window('ComboBox').SetText(ModelPath);
+  Dlg.Window('Button', '&Save').ClickButton;
+  if Aliases.TDM.TfCSMessageBox2.Exists then;
+  //Clicks the 'Yes' button.
+  Aliases.TDM.TfCSMessageBox2.Yes.ClickButton;
+  
+end;
+
+
+procedure CloseModel;
+begin
+  Aliases.TDM.FMain.MainMenu.Click('[0]|[11]|[0]');
+  //Clicks the 'Yes' button.
+  Aliases.TDM.TfCSMessageBox2.Yes.ClickButton;
+end;
+
+procedure Stop();
+var p: OLEVariant;
+begin
+  p := Sys.Process('TDM');
+  p.Terminate;
+end;
+
