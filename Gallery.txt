@@ -1,0 +1,72 @@
+uses
+  Tools;
+
+    
+procedure NewGallery;
+  var GalForm; 
+begin
+  //Moves the mouse cursor to the menu item specified and then simulates a single click.
+  Aliases.TDM.FMain.MainMenu.Click('[0]|[0]|[2]');
+  //GalForm:=  Aliases.TDM.VCLObject('fGalleryEdit');
+  Aliases.TDM.fGalleryEdit.PaMain.PGControl.ClickTab('General');
+  //Enters the text 'Galeries' in the 'EdName' text editor.
+  Aliases.TDM.fGalleryEdit.PaMain.PGControl.TSGeneral.EdName.SetText('Galerie');
+  //Enters '[Tab]' in the 'EdName' object.
+  Aliases.TDM.fGalleryEdit.PaMain.PGControl.TSGeneral.EdName.Keys('[Tab]');
+  //Enters 'testovac![Home]test galelrz' in the 'MeDescription' object.
+  Aliases.TDM.fGalleryEdit.PaMain.PGControl.TSGeneral.MeDescription.Keys('test gallery');
+  //Clicks the 'BbOk' button.
+  Aliases.TDM.fGalleryEdit.PaBottom.PaButtons.BbOk.ClickButton;
+end;
+
+procedure SaveGallery;
+begin
+  //Clicks at point (42, 13) of the 'GalleryTree' object.
+  Aliases.TDM.FMain.PRRight.FGalleryExplorer2.GalleryTree.Click(42, 13);
+  //Clicks at point (75, 14) of the 'ToolbarGE' object.
+  Aliases.TDM.FMain.PRRight.FGalleryExplorer2.AdvDockPanel.ToolbarGE.Click(75, 14);
+  //Drags from point (33, 6) of the 'btnOK' object to offset (16, -95).
+  Aliases.TDM.dlgBrowseForFolder.btnOK.Drag(33, 6, 16, -95);
+    //Clicks the 'btnOK' button.
+  Aliases.TDM.dlgBrowseForFolder.btnOK.ClickButton;
+end;
+
+procedure AddGallItems;
+begin
+  //Clicks at point (154, 19) on WS.
+  Aliases.TDM.FMain.PRLeft.TTabSheet.FHostBig.BPageControl1.TTabSheet.FPERDesigner.Panel1.Mvpanel.Click(154, 19);
+  //Enters '^a' in the 'FPERDesigner' object - sellect all objects.
+  Aliases.TDM.FMain.PRLeft.TTabSheet.FHostBig.BPageControl1.TTabSheet.FPERDesigner.Keys('^a');
+    
+  //Clicks at point (119, 71) of the 'Mvpanel' object with the right mouse button.
+  Aliases.TDM.FMain.PRLeft.TTabSheet.FHostBig.BPageControl1.TTabSheet.FPERDesigner.Panel1.Mvpanel.ClickR(119, 71);
+  //Moves the mouse cursor to the menu item specified and then simulates a single click.
+  Aliases.TDM.FMain.PRLeft.TTabSheet.FHostBig.BPageControl1.TTabSheet.FPERDesigner.Panel1.Mvpanel.PopupMenu.Click('[21]|[2]');
+    
+  //Enters '^a' in the 'EdName' object.
+  Aliases.TDM.FGalleryLocation.TntPanel2.EdName.Keys('^a');
+  //Enters the text 'videorental' in the 'EdName' text editor.
+  Aliases.TDM.FGalleryLocation.TntPanel2.EdName.SetText('videorental');
+  //Enters ' ' in the 'BtnOK' object.
+  Aliases.TDM.FGalleryLocation.TntPanel1.BtnOK.Keys(' ');
+  //Clicks at point (85, 14) of the 'ToolbarGE' object.
+  Aliases.TDM.FMain.PRRight.FGalleryExplorer2.AdvDockPanel.ToolbarGE.Click(85, 14);
+    
+end;
+
+procedure CloseGallery;
+begin 
+  //Clicks at point (29, 9) of the 'GalleryTree' object with the right mouse button.
+  Aliases.TDM.FMain.PRRight.FGalleryExplorer2.GalleryTree.ClickR(29, 9);
+  //Moves the mouse cursor to the menu item specified and then simulates a single click.
+  Aliases.TDM.FMain.PRRight.FGalleryExplorer2.GalleryTree.PopupMenu.Click('Close Gallery');
+  //Clicks the 'Yes' button.
+  Aliases.TDM.TfCSMessageBox.Yes.ClickButton;
+end;
+
+//procedure Test2;
+//begin
+  //Clicks at point (109, 248) of the 'GalleryTree' object.
+  //Aliases.TDM.FMain.PRRight.FGalleryExplorer2.GalleryTree.Click(109, 248);
+  
+//end;*/
